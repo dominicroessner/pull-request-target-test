@@ -1,0 +1,18 @@
+on:
+  push:
+    branches:
+      - main
+  pull_request_target:
+
+jobs:
+  test:
+    runs-on: ubuntu-20.04
+    steps:
+      - uses: actions/checkout@v2
+        if: ${{ github.event_name != 'pull_request_target' }}
+      - uses: actions/checkout@v2
+        if: ${{ github.event_name == 'pull_request_target' }}
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
+      - name: test
+        run: echo test
